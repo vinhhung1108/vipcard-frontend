@@ -11,7 +11,13 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
+const typescriptEslint = await import('@typescript-eslint/eslint-plugin');
+const react = await import('eslint-plugin-react');
+const reactHooks = await import('eslint-plugin-react-hooks');
+const prettier = await import('eslint-plugin-prettier');
+
 export default fixupConfigRules([
+  js.configs.recommended,
   ...compat.config({
     extends: ['next/core-web-vitals', 'prettier'],
   }),
@@ -28,18 +34,15 @@ export default fixupConfigRules([
       },
     },
     plugins: {
-      '@typescript-eslint': require('@typescript-eslint/eslint-plugin'),
-      react: require('eslint-plugin-react'),
-      'react-hooks': require('eslint-plugin-react-hooks'),
-      '@next/next': require('@next/eslint-plugin-next'),
-      prettier: require('eslint-plugin-prettier'),
+      '@typescript-eslint': typescriptEslint.default,
+      react: react.default,
+      'react-hooks': reactHooks.default,
+      prettier: prettier.default,
     },
     rules: {
-      ...require('@typescript-eslint/eslint-plugin').configs.recommended.rules,
-      ...require('eslint-plugin-react').configs.recommended.rules,
-      ...require('eslint-plugin-react-hooks').configs.recommended.rules,
-      ...require('@next/eslint-plugin-next').configs.recommended.rules,
-      ...require('@next/eslint-plugin-next').configs['core-web-vitals'].rules,
+      ...typescriptEslint.configs.recommended.rules,
+      ...react.configs.recommended.rules,
+      ...reactHooks.configs.recommended.rules,
       'prettier/prettier': 'error',
     },
   },
