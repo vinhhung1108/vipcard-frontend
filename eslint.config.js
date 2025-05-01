@@ -1,26 +1,37 @@
+// eslint.config.js
 import js from '@eslint/js';
-import ts from 'typescript-eslint';
 import next from 'eslint-plugin-next';
+import prettier from 'eslint-config-prettier';
 
 export default [
   js.configs.recommended,
-  ...ts.configs.recommended,
-  ...ts.configs.recommendedTypeChecked,
   {
-    files: ['**/*.ts', '**/*.tsx'],
-    plugins: {
-      '@typescript-eslint': ts.plugin,
-      next,
-    },
     languageOptions: {
       parserOptions: {
-        project: './tsconfig.eslint.json',
-        tsconfigRootDir: __dirname,
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        project: './tsconfig.json',
       },
+    },
+    plugins: {
+      next,
+    },
+    rules: {
+      'no-console': 'warn',
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    },
+  },
+  {
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      parser: await import('@typescript-eslint/parser'),
+    },
+    plugins: {
+      '@typescript-eslint': await import('@typescript-eslint/eslint-plugin'),
     },
     rules: {
       '@typescript-eslint/no-unused-vars': ['warn'],
-      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
+  prettier, // Luôn để sau cùng
 ];
