@@ -1,4 +1,4 @@
-/* src/app/cards/page.tsx */
+'use client';
 import { useEffect, useState } from 'react';
 import { getCards } from '@/lib/api/cards';
 import { CardResponseDto } from '@/types/card';
@@ -10,7 +10,7 @@ export default function CardsPage() {
   useEffect(() => {
     getCards()
       .then(setCards)
-      .catch((err) => console.error(err))
+      .catch(err => console.error(err))
       .finally(() => setLoading(false));
   }, []);
 
@@ -29,12 +29,18 @@ export default function CardsPage() {
           </tr>
         </thead>
         <tbody>
-          {cards.map((card) => (
+          {cards.map(card => (
             <tr key={card.id}>
               <td className="border px-4 py-2">{card.code}</td>
-              <td className="border px-4 py-2">{card.value.toLocaleString()} đ</td>
-              <td className="border px-4 py-2">{card.remainingValue.toLocaleString()} đ</td>
-              <td className="border px-4 py-2">{new Date(card.expireAt).toLocaleDateString()}</td>
+              <td className="border px-4 py-2">
+                {card.value.toLocaleString()} đ
+              </td>
+              <td className="border px-4 py-2">
+                {card.remainingValue.toLocaleString()} đ
+              </td>
+              <td className="border px-4 py-2">
+                {new Date(card.expireAt).toLocaleDateString()}
+              </td>
             </tr>
           ))}
         </tbody>
