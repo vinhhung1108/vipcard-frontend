@@ -1,17 +1,10 @@
-// src/lib/api/cards.ts
-
-import { CardResponseDto } from '@/types/card';
-
-export async function getCards(): Promise<CardResponseDto[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/cards`, {
+export async function getCards() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cards`, {
     headers: {
       Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
     },
+    next: { revalidate: 0 },
   });
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch cards');
-  }
-
+  if (!res.ok) throw new Error('Failed to fetch cards');
   return res.json();
 }
