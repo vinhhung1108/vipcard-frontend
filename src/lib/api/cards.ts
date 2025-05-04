@@ -1,20 +1,17 @@
-import { cookies } from 'next/headers';
+import { getTokenFromCookie } from '@/utils/token';
 import { CardResponseDto } from '@/types/card';
 
 export async function getCards(): Promise<CardResponseDto[]> {
-  const cookieStore = cookies();
-  const token = cookieStore.get('access_token')?.value;
+  const token = getTokenFromCookie();
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/cards`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-    cache: 'no-store',
   });
 
   if (!res.ok) {
-    console.error('Failed to fetch cards', await res.text());
-    throw new Error('Lỗi khi lấy danh sách thẻ');
+    throw new Error('Failed to fetch cards');
   }
 
   return res.json();
