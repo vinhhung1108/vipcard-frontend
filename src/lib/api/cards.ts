@@ -1,4 +1,4 @@
-import { getTokenFromCookie } from '@/utils/token';
+import { getTokenFromCookie } from '@/lib/utils/token';
 import { CardResponseDto } from '@/types/card';
 
 export async function getCards(): Promise<CardResponseDto[]> {
