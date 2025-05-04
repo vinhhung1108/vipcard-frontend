@@ -24,7 +24,7 @@ export default function LoginPage() {
       if (!res.ok) throw new Error('Login failed');
 
       const data = await res.json();
-      document.cookie = `token=${data.access_token}; path=/;`;
+      document.cookie = `access_token=${data.access_token}; path=/;`;
       router.push('/cards');
     } catch {
       setError('Email hoặc mật khẩu không đúng');
