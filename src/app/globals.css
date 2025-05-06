@@ -12,6 +12,12 @@
   --font-mono: var(--font-geist-mono);
 }
 
+@theme {
+  /* Tùy chỉnh theme nếu cần */
+  --font-family: "Inter", sans-serif;
+  --color-primary: oklch(0.7 0.15 200);
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
