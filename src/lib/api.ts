@@ -1,18 +1,35 @@
-import axios from 'axios';
+import api from './axios';
 
-const api = axios.create({
-  baseURL: 'https://apicard.namident.com/',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+// Interface cho dữ liệu thẻ
+export interface Card {
+  id: string;
+  name: string;
+  type: string;
+  expiryDate: string;
+}
 
-export async function getCards() {
+// Lấy danh sách thẻ
+export async function getCards(): Promise<Card[]> {
   try {
-    const response = await api.get('/cards'); // Thay "/cards" bằng endpoint thực tế
+    const response = await api.get('/cards'); // Thay '/cards' bằng endpoint thực tế
     return response.data;
-  } catch (error) {
-    console.error('Error fetching cards:', error);
-    throw error;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message || 'Lỗi khi lấy danh sách thẻ.');
+    }
+    throw new Error('Lỗi khi lấy danh sách thẻ.');
+  }
+}
+
+// Thêm các hàm khác nếu cần (POST, PUT, DELETE)
+export async function createCard(card: Omit<Card, 'id'>): Promise<Card> {
+  try {
+    const response = await api.post('/cards', card);
+    return response.data;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      throw new Error(error.message || 'Lỗi khi tạo thẻ.');
+    }
+    throw new Error('Lỗi khi tạo thẻ.');
   }
 }

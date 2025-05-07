@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { CardTable } from '@/components/CardTable';
-import { getCards } from '@/lib/api';
+import { Card, getCards } from '@/lib/api';
 
 export default function Home() {
-  const [cards, setCards] = useState([]);
+  const [cards, setCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -14,9 +14,12 @@ export default function Home() {
       try {
         const data = await getCards();
         setCards(data);
-      } catch (err) {
-        console.error('Error fetching cards:', err);
-        setError('Không thể tải danh sách thẻ');
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
       } finally {
         setLoading(false);
       }
@@ -26,7 +29,7 @@ export default function Home() {
 
   if (loading) return <div className="text-center py-8">Đang tải...</div>;
   if (error)
-    return <div className="text-center py-8 text-destructive">{error}</div>;
+    return <div className="text-center py-8 text-red-500">{error}</div>;
 
   return (
     <div className="container mx-auto py-8">
